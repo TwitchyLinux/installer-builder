@@ -2,6 +2,12 @@ theme = "gruvbox-dark"
 icons = "awesome"
 
 [[block]]
+block = "custom"
+command = "echo 'T'"
+on_click = 'swaymsg exec alacritty'
+interval = "once"
+
+[[block]]
 block = "memory"
 display_type = "memory"
 format_mem = "{mem_used_percents}%"

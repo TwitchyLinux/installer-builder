@@ -40,4 +40,7 @@
      source-code-pro
      font-awesome_4
    ];
+
+ nixpkgs.config.allowUnfree = true;
+
 }

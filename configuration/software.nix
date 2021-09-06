@@ -67,6 +67,10 @@
       stdenv
     ];
 
+    gui-apps = with pkgs; [
+      google-chrome
+    ];
+
   in {
     imports = [
       ./graphical-software.nix
@@ -88,5 +92,6 @@
         ++ fs-tools
         ++ general-tools
         ++ hw-tools
-        ++ toolchains;
+        ++ toolchains
+        ++ gui-apps;
   }
