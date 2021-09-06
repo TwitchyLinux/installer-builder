@@ -21,10 +21,6 @@ BOOT_IMG_MOUNT_POINT=""
 
 
 init_image () {
-  dd if=/dev/zero "of=${IMG_FILE}" bs=1 count=0 seek=16G
-  sudo losetup /dev/loop0 ${IMG_FILE}
-  IMG_DEV='/dev/loop0'
-
   echo "Creating partition table..."
   sudo parted --script "${IMG_DEV}" mklabel gpt            \
          mkpart fat32 1MiB 512MiB                          \
@@ -33,17 +29,16 @@ init_image () {
   sudo partprobe $IMG_DEV
   sleep 2
 
-  echo "Creating fat32 filesystem on ${IMG_DEV}p1..."
-  sudo mkfs.fat -F32 -n SYSTEM-EFI "${IMG_DEV}p1"
+  echo "Creating fat32 filesystem on ${IMG_DEV_BOOT}..."
+  sudo mkfs.fat -F32 -n SYSTEM-EFI "${IMG_DEV_BOOT}"
   sleep 2
 
-  BOOT_PART_UUID=`lsblk -nr -o UUID ${IMG_DEV}p1`
   mkdir -p /tmp/tmp_boot_mnt || true
-  sudo mount -o uid=$(id -u) "${IMG_DEV}p1" /tmp/tmp_boot_mnt
+  sudo mount -o uid=$(id -u) "${IMG_DEV_BOOT}" /tmp/tmp_boot_mnt
   BOOT_IMG_MOUNT_POINT="/tmp/tmp_boot_mnt"
 
-  echo "Copying rootfs to ${IMG_DEV}p2..."
-  sudo dd status=progress if=${NIX_ROOTFS_PATH} "of=${IMG_DEV}p2"
+  echo "Copying rootfs to ${IMG_DEV_MAIN}..."
+  sudo dd status=progress if=${NIX_ROOTFS_PATH} "of=${IMG_DEV_MAIN}"
 }
 
 setup_boot () {
@@ -67,7 +62,9 @@ EOF
 
 
 unmount_img () {
-  sudo losetup -d "${IMG_DEV}"
+  if [[ $IMG_DEV == /dev/loop* ]]; then
+    sudo losetup -d "${IMG_DEV}"
+  fi
   IMG_DEV=''
 }
 
@@ -88,6 +85,19 @@ on_exit () {
 
 
 trap 'on_exit $LINENO' ERR EXIT
+
+if [[ $1 == '' ]]; then
+  dd if=/dev/zero "of=${IMG_FILE}" bs=1 count=0 seek=16G
+  sudo losetup /dev/loop0 ${IMG_FILE}
+  IMG_DEV='/dev/loop0'
+  IMG_DEV_BOOT='/dev/loop0p1'
+  IMG_DEV_MAIN='/dev/loop0p2'
+else
+  IMG_DEV="$1"
+  IMG_DEV_BOOT="${1}1"
+  IMG_DEV_MAIN="${1}2"
+fi
+
 init_image
 setup_boot
 
