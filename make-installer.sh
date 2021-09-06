@@ -93,4 +93,4 @@ setup_boot
 
 # sudo apt-get install ovmf
 #
-# qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd -soundhw hda -device virtio-rng-pci -vga virtio -enable-kvm -cpu host -smp 4 -m 4G -drive format=raw,file=/tmp/twl-installer.img
+# qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd -device virtio-rng-pci -vga virtio -enable-kvm -cpu host -smp 4 -m 4G -drive format=raw,file=/tmp/twl-installer.img

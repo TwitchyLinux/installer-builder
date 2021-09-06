@@ -1,7 +1,6 @@
 {config, pkgs, boot, lib, ...}:
 {
  imports = [
-   <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
    <nixpkgs/nixos/modules/profiles/all-hardware.nix>
 
    ./software.nix
@@ -33,4 +32,12 @@
  };
  time.timeZone = "America/Los_Angeles";
 
+ # Fonts
+ fonts.fontDir.enable = true;
+ fonts.fonts = with pkgs; [
+     freefont_ttf
+     liberation_ttf
+     source-code-pro
+     font-awesome_4
+   ];
 }

@@ -4,7 +4,6 @@
    "/" = {
       label = "NIXOS_ROOT";
       fsType = "ext4";
-      autoResize = true;
     };
     "/boot" = {
       label = "SYSTEM-EFI";

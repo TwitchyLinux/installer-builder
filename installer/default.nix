@@ -4,6 +4,12 @@ let
   pkgs = nixos.pkgs;
   config = nixos.config;
 
+  dirFiles = suffix: dir: builtins.mapAttrs (n: v: dir + "/${n}")
+                                    (lib.filterAttrs (name: _: lib.hasSuffix suffix name)
+                                      (builtins.readDir dir));
+  confFiles = dirFiles ".nix" "${../configuration}";
+  resFiles = dirFiles "" "${../configuration/resources}";
+
   configNix = pkgs.writeTextFile {
     name = "configuration.nix";
     text = ''
@@ -27,11 +33,21 @@ in {
       mkdir -p ./files
       ln -s ${config.system.build.toplevel}/init ./files/init
 
+      # Copy nix configuration files
       mkdir -p ./files/etc/twl-base
-      echo '${lib.fileContents ../configuration/software.nix}' > ./files/etc/twl-base/software.nix
-      echo '${lib.fileContents ../configuration/filesystems.nix}' > ./files/etc/twl-base/filesystems.nix
-      echo '${lib.fileContents ../configuration/overlays.nix}' > ./files/etc/twl-base/overlays.nix
-      echo '${lib.fileContents ../configuration/default.nix}' > ./files/etc/twl-base/default.nix
+      NIX_FILES=$(echo '${builtins.toJSON confFiles}' | ${pkgs.jq}/bin/jq --raw-output -c 'to_entries | map("\(.key);\(.value)") | .[]')
+      for f in $NIX_FILES; do
+        IFS=';' read -ra FILE <<< "$f"
+        cat ''${FILE[1]} > "./files/etc/twl-base/''${FILE[0]}"
+      done
+
+      # Copy resources
+      mkdir -p ./files/etc/twl-base/resources
+      RES_FILES=$(echo '${builtins.toJSON resFiles}' | ${pkgs.jq}/bin/jq --raw-output -c 'to_entries | map("\(.key);\(.value)") | .[]')
+      for f in $RES_FILES; do
+        IFS=';' read -ra FILE <<< "$f"
+        cat ''${FILE[1]} > "./files/etc/twl-base/resources/''${FILE[0]}"
+      done
 
       mkdir -p ./files/etc/nixos
       install ${configNix} -m644 ./files/etc/nixos/configuration.nix

@@ -68,6 +68,10 @@
     ];
 
   in {
+    imports = [
+      ./graphical-software.nix
+    ];
+
     system.extraDependencies = with pkgs;
       [
         stdenv
