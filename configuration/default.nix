@@ -2,6 +2,7 @@
 {
  imports = [
    <nixpkgs/nixos/modules/profiles/all-hardware.nix>
+   <nixpkgs/nixos/modules/hardware/all-firmware.nix>
 
    ./software.nix
    ./filesystems.nix
@@ -43,4 +44,7 @@
 
  nixpkgs.config.allowUnfree = true;
 
+
+ # Networking
+ networking.networkmanager.enable = true;
 }

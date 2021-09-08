@@ -40,4 +40,29 @@ in {
       cp swaynagmode $out/bin
     '';
   };
+
+  twl-desktop-shortcuts = super.stdenv.mkDerivation rec {
+    pname = "twl-desktop-shortcuts";
+    version = "0.0.1";
+
+    src = ./resources/shortcut-template;
+
+    dontUnpack = true;
+    dontBuild = true;
+    dontConfigure = true;
+
+    installPhase = ''
+      mkdir -p $out/share/applications/
+
+      cp $src $out/share/applications/shutdown.desktop
+      sed -i 's/CMD/systemctl poweroff -i/g'            $out/share/applications/shutdown.desktop
+      sed -i 's/NAME/Shutdown/g'                        $out/share/applications/shutdown.desktop
+      sed -i 's/ICON/system-shutdown/g'                 $out/share/applications/shutdown.desktop
+
+      cp $src $out/share/applications/reboot.desktop
+      sed -i 's/CMD/systemctl reboot/g'                 $out/share/applications/reboot.desktop
+      sed -i 's/NAME/Reboot/g'                          $out/share/applications/reboot.desktop
+      sed -i 's/ICON/system-reboot\nKeywords=restart/g' $out/share/applications/reboot.desktop
+    '';
+  };
 }

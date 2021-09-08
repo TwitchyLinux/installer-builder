@@ -11,9 +11,14 @@
       mako # notification daemon
       swaynagmode # action confirmation
       kanshi # hotplug => output changes
+      wob # volume popover
       wofi
 
       alacritty
+
+      twl-desktop-shortcuts
+      gnome-icon-theme
+      hicolor-icon-theme
     ];
   };
   programs.waybar.enable = true;
