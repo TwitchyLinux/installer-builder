@@ -1,7 +1,7 @@
 {config, pkgs, ...}:
   let
     editors = with pkgs; [ nano vim ];
-    net-tools = with pkgs; [ wget curl rsync socat inetutils iproute2 ];
+    net-tools = with pkgs; [ wget curl rsync socat inetutils iproute2 nftables ];
     mon-tools = with pkgs; [ htop iotop iftop nload smartmontools ];
 
     fs-tools = with pkgs; [
@@ -54,6 +54,8 @@
 
       screen
       tmux
+
+      age
     ];
 
     hw-tools = with pkgs; [

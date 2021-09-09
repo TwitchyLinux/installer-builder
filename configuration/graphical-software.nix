@@ -14,14 +14,19 @@
       wob # volume popover
       wofi
 
+      grim
+      slurp
+
       alacritty
+      pcmanfm-qt
+      feh
 
       twl-desktop-shortcuts
       gnome-icon-theme
       hicolor-icon-theme
     ];
   };
-  programs.waybar.enable = true;
+  programs.waybar.enable = false;
 
 
   environment.systemPackages = with pkgs; [
