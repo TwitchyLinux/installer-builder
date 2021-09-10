@@ -30,7 +30,7 @@
  time.timeZone = "America/Los_Angeles";
  environment.etc.inputrc = {
    mode = "0644";
-   text = builtins.readFile ./resources/inputrc;
+   source = pkgs.copyPathToStore ./resources/inputrc;
  };
 
  # Fonts
