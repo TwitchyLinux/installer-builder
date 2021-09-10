@@ -27,11 +27,11 @@
  console = {
    keyMap = "us";
  };
- i18n = {
-   defaultLocale = "en_US.UTF-8";
-   supportedLocales = [ (config.i18n.defaultLocale + "/UTF-8") ];
- };
  time.timeZone = "America/Los_Angeles";
+ environment.etc.inputrc = {
+   mode = "0644";
+   text = builtins.readFile ./resources/inputrc;
+ };
 
  # Fonts
  fonts.fontDir.enable = true;
