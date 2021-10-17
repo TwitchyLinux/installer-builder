@@ -28,4 +28,8 @@ in {
   twl-desktop-shortcuts = import ./overlay_desktop-shortcuts.nix {
     inherit self super;
   };
+
+  twlinst = import ./overlay_twlinst.nix {
+    inherit self super;
+  };
 }

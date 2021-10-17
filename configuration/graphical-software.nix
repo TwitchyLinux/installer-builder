@@ -21,6 +21,8 @@
       pcmanfm-qt
       feh
 
+      twlinst
+
       twl-desktop-shortcuts
       gnome-icon-theme
       hicolor-icon-theme
