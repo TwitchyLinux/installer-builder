@@ -22,7 +22,6 @@
       feh
 
       twlinst
-
       twl-desktop-shortcuts
       gnome-icon-theme
       hicolor-icon-theme
@@ -60,28 +59,13 @@
     };
   };
 
-
-
-  hardware.opengl = {
-    enable = true;
-    #driSupport32Bit = true;
-  };
-
-  hardware.pulseaudio = {
-    enable = true;
-    support32Bit = true;
-    #package = pkgs.pulseaudioFull;
-  };
-
-
-
-  systemd.user.targets.sway-session = {
+  /* systemd.user.targets.sway-session = {
     description = "Sway compositor session";
     documentation = [ "man:systemd.special(7)" ];
     bindsTo = [ "graphical-session.target" ];
     wants = [ "graphical-session-pre.target" ];
     after = [ "graphical-session-pre.target" ];
-  };
+  }; */
 
   systemd.user.services.sway = {
     description = "Sway - Wayland window manager";
@@ -102,5 +86,17 @@
       RestartSec = 1;
       TimeoutStopSec = 10;
     };
+  };
+
+
+  hardware.opengl = {
+    enable = true;
+    #driSupport32Bit = true;
+  };
+
+  hardware.pulseaudio = {
+    enable = true;
+    support32Bit = true;
+    #package = pkgs.pulseaudioFull;
   };
 }
