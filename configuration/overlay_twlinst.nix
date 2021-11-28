@@ -1,24 +1,21 @@
 { self, super }:
 
-  super.buildGoPackage rec {
+  super.buildGoModule rec {
    name = "twlinst";
-   version = "833aae0a873de9f3b468dfbeaca9a2254f34d139";
-   goPackagePath = "https://github.com/twitchylinux/twlinst";
+   version = "9632da4cc8656691924987e3135f15196ff8e40c";
 
    src = super.fetchFromGitHub {
      owner = "twitchylinux";
      repo = "twlinst";
      rev = "${version}";
-     sha256 = "1srcgv3k7q1xfig7vlmjavdgkc78616pw5npvwlbnhflrj4z816r"; # use nix-prefetch-git
+     sha256 = "1rlaqkmy3z03wqrk4vb515p4143fmwsghxlp5l38wg9pcgpdp8rb"; # use nix-prefetch-git
    };
-   goDeps = ./resources/twlinst-deps.nix;
+
+   vendorSha256 = "sha256-FKB3YiM/zkkW5olfnaCw4AYI7YvcpvLyLSP6xHMd5mY=";
 
    nativeBuildInputs = [ super.pkg-config ];
    buildInputs = [ super.gtk3 ];
 
-   preBuild = ''
-       mv go/src/${goPackagePath}/layout.glade layout.glade
-     '';
    postInstall = ''
        cp -v layout.glade $out/twlinst.glade
      '';

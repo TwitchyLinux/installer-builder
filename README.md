@@ -5,6 +5,17 @@ Make sure nix is working in your shell using the instructions below, then:
 1. `./make-installer.sh`, be ready to sudo
 1. `qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd -soundhw hda -device virtio-rng-pci -vga virtio -enable-kvm -cpu host -smp 4 -m 4G -drive format=raw,file=/tmp/twl-installer.img`
 
+If you want to test the installer by installing to a fake HDD:
+
+```shell
+
+qemu-img create -f qcow2 /tmp/qemu_hdd.img 25G
+qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd -soundhw hda -device virtio-rng-pci -vga virtio \
+    -enable-kvm -cpu host -smp 4 -m 4G -drive format=raw,file=/tmp/twl-installer.img \
+    -drive id=disk,file=/tmp/qemu_hdd.img,if=none -device ahci,id=ahci -device ide-drive,drive=disk,bus=ahci.0
+
+```
+
 ## Getting nix working
 
 Each session:
