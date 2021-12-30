@@ -29,7 +29,9 @@ in {
     inherit self super;
   };
 
+  # Start-marker: Trim on install
   twlinst = import ./overlay_twlinst.nix {
     inherit self super;
   };
+  # End-marker: Trim on install
 }

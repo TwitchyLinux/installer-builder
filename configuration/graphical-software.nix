@@ -21,7 +21,7 @@
       pcmanfm-qt
       feh
 
-      twlinst
+      twlinst # Line-marker: Trim on install
       twl-desktop-shortcuts
       gnome-icon-theme
       hicolor-icon-theme
