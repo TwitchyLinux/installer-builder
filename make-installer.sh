@@ -30,7 +30,7 @@ init_image () {
   sleep 2
 
   echo "Creating fat32 filesystem on ${IMG_DEV_BOOT}..."
-  sudo mkfs.fat -F32 -n SYSTEM-EFI "${IMG_DEV_BOOT}"
+  sudo mkfs.fat -F32 -n INST-EFI "${IMG_DEV_BOOT}"
   sleep 2
 
   mkdir -p /tmp/tmp_boot_mnt || true

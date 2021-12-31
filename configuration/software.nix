@@ -39,6 +39,7 @@
       util-linux
       getent
       shadow
+      mkpasswd
       killall
 
       unzip

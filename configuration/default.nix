@@ -5,7 +5,7 @@
    <nixpkgs/nixos/modules/hardware/all-firmware.nix>
 
    ./software.nix
-   ./filesystems.nix
+   ./filesystems.nix # Line-marker: Trim on install
  ];
  nixpkgs.overlays = [ (import ./overlays.nix) ];
 
@@ -27,7 +27,6 @@
  console = {
    keyMap = "us";
  };
- time.timeZone = "America/Los_Angeles";
  environment.etc.inputrc = {
    mode = "0644";
    source = pkgs.copyPathToStore ./resources/inputrc;
@@ -44,7 +43,14 @@
 
  nixpkgs.config.allowUnfree = true;
 
-
  # Networking
  networking.networkmanager.enable = true;
+
+ # Users / access control
+ security.sudo = {
+   enable = true;
+   wheelNeedsPassword = false;
+ };
+
+ documentation.enable = true;
 }

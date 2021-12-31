@@ -17,10 +17,6 @@
     # Allow the graphical user to login without password
     initialHashedPassword = "";
   };
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = false;
-  };
 
   system.activationScripts.etc = lib.stringAfter [ "users" "groups" ]
     ''
@@ -53,6 +49,8 @@
     text = lib.fileContents ../configuration/resources/sway.config + "\nexec twlinst";
   };
 
-  documentation.enable = true;
+
+  time.timeZone = "America/Los_Angeles";
+
   documentation.nixos.enable = true;
 }
