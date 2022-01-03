@@ -1,7 +1,22 @@
-{ lib, pkgs, ... }:
-{
+{ lib, pkgs, config, ... }:
+let
+inputClosureOf = pkg: pkgs.runCommand "full-closure" {
+    refs = pkgs.writeReferencesToFile pkg.drvPath;
+  } ''
+    touch $out
+    while read ref; do
+      case $ref in
+        *.drv)
+          cat $ref >>$out
+          ;;
+      esac
+    done <$refs
+  '';
+
+in {
   imports = [
      <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
+     <nixpkgs/nixos/modules/profiles/base.nix>
 
     ../configuration
   ];
@@ -49,8 +64,45 @@
     text = lib.fileContents ../configuration/resources/sway.config + "\nexec twlinst";
   };
 
+  # environment.extraOutputsToInstall = [ "doc" "man" "info" ];
+  system.extraDependencies = with pkgs;
+    [
+      stdenv stdenvNoCC # for runCommand
+      binutilsNoLibc
+      buildPackages.patchelf
+      buildPackages.nukeReferences
+      buildPackages.bash
+      buildPackages.perl
+      buildPackages.busybox
+      stdenv.cc.libc
+      busybox-sandbox-shell
+
+      nukeReferences
+      perlPackages.FileSlurp perlPackages.JSON
+
+      buildPackages.desktop-file-utils
+      buildPackages.shared-mime-info
+      buildPackages.gtk3
+      buildPackages.texinfo
+      w3m-nographics
+      texinfoInteractive
+
+      xorg.lndir
+
+      # buildEnv { }
+
+      (import <nixpkgs/pkgs/stdenv/linux/make-bootstrap-tools.nix> { }).build
+
+      /* (
+        callPackage <nixpkgs/pkgs/shells/bash/5.1.nix> {
+          binutils = stdenv.cc.bintools;
+          withDocs = true;
+        }
+      ) */
+
+      # (inputClosureOf (import <nixpkgs/nixos> { configuration = import ../configuration; }).pkgs.sway)
+    ];
 
   time.timeZone = "America/Los_Angeles";
-
-  documentation.nixos.enable = true;
+  boot.initrd.luks.forceLuksSupportInInitrd = true;
 }

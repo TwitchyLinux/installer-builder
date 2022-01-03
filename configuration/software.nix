@@ -1,16 +1,26 @@
 {config, pkgs, ...}:
   let
-    editors = with pkgs; [ nano vim ];
-    net-tools = with pkgs; [ wget curl rsync socat inetutils iproute2 nftables ];
+    editors = with pkgs; [ nano vim less ];
+    net-tools = with pkgs; [ wget curl rsync socat netcat inetutils iproute2 iputils nftables nettools dig ];
     mon-tools = with pkgs; [ htop iotop iftop nload smartmontools ];
 
+    base-tools = with pkgs; [
+      coreutils-full util-linux
+      gnugrep gnused gnupatch gawk
+      findutils diffutils binutils bintools procps
+      attr acl zlib pcre atk libcap ncurses
+      bash bashInteractive
+      unzip gzip zip xz cpio bzip2 zstd gnutar
+      getent getconf
+      time which
+      su sudo shadow
+    ];
+
     fs-tools = with pkgs; [
-      ntfsprogs
-      e2fsprogs
-      dosfstools
-      f2fs-tools
-      squashfsTools
-      squashfs-tools-ng
+      ntfsprogs e2fsprogs dosfstools f2fs-tools
+      squashfsTools squashfs-tools-ng
+
+      lvm2 mdadm
 
       parted
       gptfdisk
@@ -31,32 +41,23 @@
     ];
 
     general-tools = with pkgs; [
-      bash
-      bashInteractive
-      coreutils
-      gnugrep
-      findutils
-      util-linux
-      getent
-      shadow
       mkpasswd
       killall
+      kmod
 
-      unzip
-      zip
-      xz
+      nix-tree
 
       git
       jq
 
-      bat
-      lsd
-      duf
+      bat lsd duf
 
-      screen
-      tmux
+      screen tmux
 
-      age
+      age gnupg
+      openssl
+
+      graphviz
     ];
 
     hw-tools = with pkgs; [
@@ -68,10 +69,8 @@
       go
       rustc rustfmt cargo clippy gcc # cc needed for rust too
       stdenv
-    ];
-
-    gui-apps = with pkgs; [
-      google-chrome
+      perl python3
+      gnumake cmake patch
     ];
 
   in {
@@ -79,22 +78,16 @@
       ./graphical-software.nix
     ];
 
-    system.extraDependencies = with pkgs;
-      [
-        stdenv
-        stdenvNoCC # for runCommand
-        patchelf
-      ];
-
     environment.systemPackages = [
          pkgs.firecracker
+         pkgs.udisks
        ]
+        ++ base-tools
         ++ editors
         ++ net-tools
         ++ mon-tools
         ++ fs-tools
         ++ general-tools
         ++ hw-tools
-        ++ toolchains
-        ++ gui-apps;
+        ++ toolchains;
   }

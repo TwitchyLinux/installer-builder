@@ -16,6 +16,10 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd -soundhw hda -device virtio-rng
 
 ```
 
+## Useful poking
+
+`nix repl '<nixpkgs/nixos>' -I nixos-config=installer/config.nix`
+
 ## Getting nix working
 
 Each session:

@@ -6,7 +6,6 @@
     extraPackages = with pkgs; [
       swaylock # lockscreen
       swayidle
-      xwayland # for legacy apps
       i3status-rust # status bar
       mako # notification daemon
       swaynagmode # action confirmation
@@ -20,6 +19,7 @@
       alacritty
       pcmanfm-qt
       feh
+      google-chrome
 
       twlinst # Line-marker: Trim on install
       twl-desktop-shortcuts
@@ -28,12 +28,12 @@
     ];
   };
   programs.waybar.enable = false;
+  programs.xwayland.enable = true;
 
 
   environment.systemPackages = with pkgs; [
     wl-clipboard
     mesa
-    win-spice
     (
       pkgs.writeTextFile {
         name = "startsway";
@@ -59,14 +59,6 @@
     };
   };
 
-  /* systemd.user.targets.sway-session = {
-    description = "Sway compositor session";
-    documentation = [ "man:systemd.special(7)" ];
-    bindsTo = [ "graphical-session.target" ];
-    wants = [ "graphical-session-pre.target" ];
-    after = [ "graphical-session-pre.target" ];
-  }; */
-
   systemd.user.services.sway = {
     description = "Sway - Wayland window manager";
     documentation = [ "man:sway(5)" ];
@@ -80,7 +72,7 @@
     serviceConfig = {
       Type = "simple";
       ExecStart = ''
-        ${pkgs.dbus}/bin/dbus-run-session ${pkgs.sway}/bin/sway --debug
+        ${pkgs.dbus}/bin/dbus-run-session sway --debug
       '';
       Restart = "on-failure";
       RestartSec = 1;
