@@ -37,11 +37,14 @@ in {
     ''
       mkdir -pv /home/nixos/.config/sway
       ln -s /etc/installer-sway.config /home/nixos/.config/sway/config || true
+      chown nixos /home/nixos/.config
+      chown nixos /home/nixos/.config/sway
 
       if [ ! -f /home/nixos/.bashrc ]; then
         echo 'if [[ $(tty) == "/dev/tty1" ]]; then' >> /home/nixos/.bash_login
         echo '  sleep 2 && startsway' >> /home/nixos/.bash_login
         echo 'fi' >> /home/nixos/.bash_login
+        chown nixos /home/nixos/.bash_login
       fi
     '';
 

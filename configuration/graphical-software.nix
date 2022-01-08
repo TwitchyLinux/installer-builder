@@ -5,16 +5,20 @@
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
       swaylock # lockscreen
-      swayidle
+      swayidle # Engage lockscreen after inactivity
+      wob # volume popover
+      wofi # launch menu
+
       i3status-rust # status bar
       mako # notification daemon
       swaynagmode # action confirmation
-      kanshi # hotplug => output changes
-      wob # volume popover
-      wofi
 
-      grim
-      slurp
+      gammastep
+
+      # kanshi # hotplug => output changes
+
+      grim # screenshots
+      slurp # region selector, works with grim
 
       alacritty
       pcmanfm-qt
@@ -72,14 +76,13 @@
     serviceConfig = {
       Type = "simple";
       ExecStart = ''
-        ${pkgs.dbus}/bin/dbus-run-session sway --debug
+        ${pkgs.dbus}/bin/dbus-run-session sway
       '';
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;
     };
   };
-
 
   hardware.opengl = {
     enable = true;
@@ -89,6 +92,6 @@
   hardware.pulseaudio = {
     enable = true;
     support32Bit = true;
-    #package = pkgs.pulseaudioFull;
+    package = pkgs.pulseaudioFull;
   };
 }

@@ -81,6 +81,7 @@
     environment.systemPackages = [
          pkgs.firecracker
          pkgs.udisks
+         pkgs.pamixer
        ]
         ++ base-tools
         ++ editors
