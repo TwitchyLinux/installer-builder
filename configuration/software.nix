@@ -1,7 +1,13 @@
 {config, pkgs, ...}:
   let
     editors = with pkgs; [ nano vim less ];
-    net-tools = with pkgs; [ wget curl rsync socat netcat inetutils iproute2 iputils nftables nettools dig ];
+    net-tools = with pkgs; [
+      inetutils iproute2 iputils nettools
+      wget curl
+      rsync
+      socat netcat
+      nftables dig
+    ];
     mon-tools = with pkgs; [ htop iotop iftop nload smartmontools ];
 
     base-tools = with pkgs; [
