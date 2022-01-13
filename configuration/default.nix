@@ -42,6 +42,7 @@
    ];
 
  nixpkgs.config.allowUnfree = true;
+ hardware.enableRedistributableFirmware = lib.mkDefault true;
 
  # Networking
  networking.networkmanager.enable = true;

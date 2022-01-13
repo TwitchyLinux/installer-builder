@@ -51,7 +51,7 @@
       killall
       kmod
 
-      nix-tree
+      nix-tree nix-prefetch-git
 
       git
       jq

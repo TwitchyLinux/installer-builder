@@ -1,4 +1,3 @@
-#!/bin/bash
 set -e
 
 if [[ $(whoami) == "root" ]]; then
@@ -7,10 +6,9 @@ if [[ $(whoami) == "root" ]]; then
 fi
 
 # Nix
-NIX_TOPLEVEL_PATH=$(nix-user-chroot /scratch/nix-store/ bash -l -c 'nix-build --max-jobs 4 --cores 8 -A toplevel installer')
-NIX_ROOTFS_PATH=$(nix-user-chroot /scratch/nix-store/ bash -l -c 'nix-build --max-jobs 4 --cores 8 -A rootfsImage installer')
-NIX_ROOTFS_PATH="/scratch/nix-store/${NIX_ROOTFS_PATH:4}"
-kernel_params=$(nix-user-chroot /scratch/nix-store/ cat "${NIX_TOPLEVEL_PATH}/kernel-params")
+NIX_TOPLEVEL_PATH=$(nix-build --max-jobs 4 --cores 8 -A toplevel installer)
+NIX_ROOTFS_PATH=$(nix-build --max-jobs 4 --cores 8 -A rootfsImage installer)
+kernel_params=$(cat "${NIX_TOPLEVEL_PATH}/kernel-params")
 
 # Globals
 SCRIPT_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
@@ -54,10 +52,8 @@ EOF
 
   sed -i "s*OPTS_LINE*${kernel_params}*g" ${BOOT_IMG_MOUNT_POINT}/loader/entries/installer.conf
 
-  nix-user-chroot /scratch/nix-store install "${NIX_TOPLEVEL_PATH}/kernel" -m 0755 /tmp/twlinst_kernel
-  nix-user-chroot /scratch/nix-store install "${NIX_TOPLEVEL_PATH}/initrd" -m 0755 /tmp/twlinst_initrd
-  cp -v /tmp/twlinst_kernel ${BOOT_IMG_MOUNT_POINT}/efi/kernel
-  cp -v /tmp/twlinst_initrd ${BOOT_IMG_MOUNT_POINT}/efi/initrd
+  install "${NIX_TOPLEVEL_PATH}/kernel" -m 0755 "${BOOT_IMG_MOUNT_POINT}/efi/kernel"
+  install "${NIX_TOPLEVEL_PATH}/initrd" -m 0755 "${BOOT_IMG_MOUNT_POINT}/efi/initrd"
 }
 
 
