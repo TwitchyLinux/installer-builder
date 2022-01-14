@@ -21,6 +21,9 @@ in {
   twl-sway-conf = noopMkderivation "twl-sway-conf" "sway.config";
   twl-i3status-conf = noopMkderivation "twl-i3status-conf" "i3status-rs.toml";
 
+  twl-theme-gtk2 = noopMkderivation "twl-theme-gtk2" "gtk2";
+  twl-theme-gtk3 = noopMkderivation "twl-theme-gtk3" "gtk3";
+
   swaynagmode = import ./overlay_swaynagmode.nix {
     inherit self super;
   };

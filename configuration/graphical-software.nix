@@ -12,7 +12,6 @@
       i3status-rust # status bar
       mako # notification daemon
       swaynagmode # action confirmation
-
       gammastep
 
       # kanshi # hotplug => output changes
@@ -21,14 +20,20 @@
       slurp # region selector, works with grim
 
       alacritty
-      pcmanfm-qt
+      pcmanfm
       feh
       google-chrome
+      vlc
+      gnome3.gnome-calculator
 
       twlinst # Line-marker: Trim on install
       twl-desktop-shortcuts
+
+
+      # Defaults / baseline
       gnome-icon-theme
-      hicolor-icon-theme
+      gnome3.adwaita-icon-theme
+      gnome3.gnome-themes-extra
     ];
   };
   programs.waybar.enable = false;
@@ -60,6 +65,9 @@
       "sway/config".source = "${pkgs.twl-sway-conf}/sway.config";
       "sway/i3status-rs.toml".source = "${pkgs.twl-i3status-conf}/i3status-rs.toml";
       "twitchy_background.png".source = "${pkgs.twl-background}/twitchy_background.png";
+
+      "xdg/gtk-2.0/gtkrc".source = "${pkgs.twl-theme-gtk2}/gtk2";
+      "xdg/gtk-3.0/settings.ini".source = "${pkgs.twl-theme-gtk3}/gtk3";
     };
   };
 
