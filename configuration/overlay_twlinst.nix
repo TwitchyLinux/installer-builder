@@ -3,13 +3,13 @@
 
   super.buildGoModule rec {
    name = "twlinst";
-   version = "9a2db153b9446feaec747c2cf9cc6b5b600c407c";
+   version = "d588f9c7e386c23d76848730cd0d3bd4b2f80e85";
 
    src = super.fetchFromGitHub {
      owner = "twitchylinux";
      repo = "twlinst";
      rev = "${version}";
-     sha256 = "1s60ijih1m8yz40rjpkm7bsmb7vpn70wqx9s5hwngccnfn6mmv7l"; # use nix-prefetch-git
+     sha256 = "07arq62hv62vifdpiq6yx5yxjkzmfys16m15cbgvxzlimzm05dp2"; # use nix-prefetch-git
    };
 
    vendorSha256 = "sha256-FKB3YiM/zkkW5olfnaCw4AYI7YvcpvLyLSP6xHMd5mY=";

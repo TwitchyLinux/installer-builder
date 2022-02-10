@@ -3,7 +3,7 @@ icons = "awesome"
 
 [[block]]
 block = "custom"
-command = "echo 'T'"
+command = "echo '\uf120'"
 on_click = 'swaymsg exec alacritty'
 interval = "once"
 

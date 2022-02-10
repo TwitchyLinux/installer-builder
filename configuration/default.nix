@@ -57,4 +57,11 @@
  documentation.man.enable = true;
  documentation.dev.enable = true;
  documentation.nixos.enable = true;
+
+ # Maintenance
+ nix.gc = {
+  automatic = true;
+  options = "--delete-older-than 8d";
+  dates = "Sat,Mon *-*-* 09:00";
+ };
 }

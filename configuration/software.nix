@@ -77,6 +77,7 @@
       stdenv
       perl python3
       gnumake cmake patch
+      patchelf
     ];
 
   in {

@@ -21,13 +21,17 @@
 
       alacritty
       pcmanfm
-      feh
-      google-chrome
+
       vlc
+      ffmpegthumbnailer
+      feh
+
+      google-chrome
       gnome3.gnome-calculator
 
       twlinst # Line-marker: Trim on install
       twl-desktop-shortcuts
+      xdg-utils
 
 
       # Defaults / baseline
@@ -38,7 +42,6 @@
   };
   programs.waybar.enable = false;
   programs.xwayland.enable = true;
-
 
   environment.systemPackages = with pkgs; [
     wl-clipboard
@@ -101,5 +104,17 @@
     enable = true;
     support32Bit = true;
     package = pkgs.pulseaudioFull;
+  };
+
+  xdg.mime.defaultApplications = {
+    "image/bmp" = "feh.desktop";
+    "image/gif" = "feh.desktop";
+    "image/jpeg" = "feh.desktop";
+    "image/jpg" = "feh.desktop";
+    "image/pjpeg" = "feh.desktop";
+    "image/png" = "feh.desktop";
+    "image/tiff" = "feh.desktop";
+    "image/webp" = "feh.desktop";
+    "application/pdf" = "google-chrome.desktop";
   };
 }
