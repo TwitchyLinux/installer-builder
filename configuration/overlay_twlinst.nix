@@ -1,4 +1,3 @@
-# File-marker: Trim on install
 { self, super }:
 
   super.buildGoModule rec {

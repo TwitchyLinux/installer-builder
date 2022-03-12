@@ -21,6 +21,18 @@ in {
     ../configuration
   ];
 
+  twl.installer = lib.mkForce true;
+  fileSystems = {
+    "/" = {
+      label = "NIXOS_ROOT";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      label = "INST-EFI";
+      fsType = "vfat";
+    };
+  };
+
   services.getty = {
     greetingLine = ''<<< Welcome to the TwitchyLinux Installer! (\m) - \l >>>'';
     autologinUser = "nixos";
