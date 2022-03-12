@@ -14,13 +14,15 @@ let
     done <$refs
   '';
 
+  base-twl-config = import ./base-config-src.nix;
+
 in
 {
   imports = [
     <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
     <nixpkgs/nixos/modules/profiles/base.nix>
 
-    ../configuration
+    base-twl-config
   ];
 
   twl.installer = lib.mkForce true;
@@ -78,7 +80,7 @@ in
   };
   environment.etc."installer-sway.config" = {
     mode = "0644";
-    text = lib.fileContents ../configuration/resources/sway.config + "\nexec twlinst";
+    text = lib.fileContents "${base-twl-config}/resources/sway.config" + "\nexec twlinst";
   };
 
   # environment.extraOutputsToInstall = [ "doc" "man" "info" ];
@@ -94,6 +96,7 @@ in
       buildPackages.busybox
       stdenv.cc.libc
       busybox-sandbox-shell
+      base-twl-config
 
       nukeReferences
       perlPackages.FileSlurp

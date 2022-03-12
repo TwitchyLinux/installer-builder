@@ -1,4 +1,6 @@
-## Build
+# installer-builder
+
+Creates a TwitchyLinux installer image or USB.
 
 `./make-installer.sh`
 
@@ -14,16 +16,3 @@ qemu-system-x86_64 -bios $(nix eval --raw nixpkgs.OVMF.fd)/FV/OVMF.fd -device vi
 # Dont forget to install qemu and 'OVMF'
 
 ```
-
-
-## Useful poking
-
-`nix repl '<nixpkgs/nixos>' -I nixos-config=installer/config.nix`
-
-
-```
-
-## minivm instructions
-
-1. `cd minivm`
-1. Run `./build.sh --test-qemu`
