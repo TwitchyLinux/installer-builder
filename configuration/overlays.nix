@@ -11,12 +11,13 @@ let
     dontUnpack = true;
 
     installPhase = ''
-    mkdir $out
-    cp $src/${fname} $out/${fname}
+      mkdir $out
+      cp $src/${fname} $out/${fname}
     '';
   };
 
-in {
+in
+{
   twl-background = noopMkderivation "twl-background" "twitchy_background.png";
   twl-sway-conf = noopMkderivation "twl-sway-conf" "sway.config";
   twl-i3status-conf = noopMkderivation "twl-i3status-conf" "i3status-rs.toml";

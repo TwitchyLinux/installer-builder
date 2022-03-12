@@ -1,8 +1,9 @@
 { lib, pkgs, config, ... }:
 let
-inputClosureOf = pkg: pkgs.runCommand "full-closure" {
-    refs = pkgs.writeReferencesToFile pkg.drvPath;
-  } ''
+  inputClosureOf = pkg: pkgs.runCommand "full-closure"
+    {
+      refs = pkgs.writeReferencesToFile pkg.drvPath;
+    } ''
     touch $out
     while read ref; do
       case $ref in
@@ -13,10 +14,11 @@ inputClosureOf = pkg: pkgs.runCommand "full-closure" {
     done <$refs
   '';
 
-in {
+in
+{
   imports = [
-     <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
-     <nixpkgs/nixos/modules/profiles/base.nix>
+    <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
+    <nixpkgs/nixos/modules/profiles/base.nix>
 
     ../configuration
   ];
@@ -82,7 +84,8 @@ in {
   # environment.extraOutputsToInstall = [ "doc" "man" "info" ];
   system.extraDependencies = with pkgs;
     [
-      stdenv stdenvNoCC # for runCommand
+      stdenv
+      stdenvNoCC # for runCommand
       binutilsNoLibc
       buildPackages.patchelf
       buildPackages.nukeReferences
@@ -93,7 +96,8 @@ in {
       busybox-sandbox-shell
 
       nukeReferences
-      perlPackages.FileSlurp perlPackages.JSON
+      perlPackages.FileSlurp
+      perlPackages.JSON
 
       buildPackages.desktop-file-utils
       buildPackages.shared-mime-info
@@ -110,10 +114,10 @@ in {
 
       /* (
         callPackage <nixpkgs/pkgs/shells/bash/5.1.nix> {
-          binutils = stdenv.cc.bintools;
-          withDocs = true;
+        binutils = stdenv.cc.bintools;
+        withDocs = true;
         }
-      ) */
+        ) */
 
       # (inputClosureOf (import <nixpkgs/nixos> { configuration = import ../configuration; }).pkgs.sway)
     ];

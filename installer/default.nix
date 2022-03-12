@@ -1,28 +1,29 @@
 let
   nixos = import <nixpkgs/nixos> { configuration = import ./config.nix; };
-  lib = (import <nixpkgs> {}).lib;
+  lib = (import <nixpkgs> { }).lib;
   pkgs = nixos.pkgs;
   config = nixos.config;
 
   dirFiles = suffix: dir: builtins.mapAttrs (n: v: dir + "/${n}")
-                                    (lib.filterAttrs (name: _: lib.hasSuffix suffix name)
-                                      (builtins.readDir dir));
+    (lib.filterAttrs (name: _: lib.hasSuffix suffix name)
+      (builtins.readDir dir));
   confFiles = dirFiles ".nix" "${../configuration}";
   resFiles = dirFiles "" "${../configuration/resources}";
 
   configNix = pkgs.writeTextFile {
     name = "configuration.nix";
     text = ''
-    {...}:
-    {
-     imports = [
-      /etc/twl-base
-     ];
-    }
+      {...}:
+      {
+       imports = [
+        /etc/twl-base
+       ];
+      }
     '';
   };
 
-in {
+in
+{
   toplevel = config.system.build.toplevel;
 
   rootfsImage = pkgs.callPackage <nixpkgs/nixos/lib/make-ext4-fs.nix> ({

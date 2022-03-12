@@ -2,7 +2,8 @@
 let
   cfg = config.twl;
 
-in {
+in
+{
   config = {
     programs.sway = {
       enable = true;
