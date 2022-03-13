@@ -14,7 +14,7 @@ let
     done <$refs
   '';
 
-  base-twl-config = import ./base-config-src.nix;
+  base-twl-config = (import ./sources.nix).twl-base-config;
 
 in
 {

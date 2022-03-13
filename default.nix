@@ -4,7 +4,13 @@ let
   pkgs = nixos.pkgs;
   config = nixos.config;
 
-  base-twl-config = import ./base-config-src.nix;
+  base-twl-config = (import ./sources.nix).twl-base-config;
+  nixos-hardware = (import ./sources.nix).nixos-hardware;
+
+  hw-info = import ./hardware.nix {
+    pkgs = pkgs;
+    nixos-hardware = nixos-hardware;
+  };
 
   configNix = pkgs.writeTextFile {
     name = "configuration.nix";
@@ -20,6 +26,8 @@ let
 
 in
 {
+  version,
+}: {
   toplevel = config.system.build.toplevel;
 
   rootfsImage = pkgs.callPackage <nixpkgs/nixos/lib/make-ext4-fs.nix> ({
@@ -34,8 +42,16 @@ in
       mkdir -p ./files/etc/twl-base
       cp -rv ${base-twl-config}/* ./files/etc/twl-base
 
+      # Copy nixos-hardware
+      mkdir -p ./files/etc/nixos-hardware
+      cp -rv ${nixos-hardware}/* ./files/etc/nixos-hardware
+
       mkdir -p ./files/etc/nixos
       install ${configNix} -m644 ./files/etc/nixos/configuration.nix
+
+      echo '${version}' > ./files/twl-installer-version
+
+      install ${hw-info} -m644 ./files/nixos-hardware-info.json
     '';
   });
 }

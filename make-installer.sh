@@ -5,6 +5,13 @@ if [[ $(whoami) == "root" ]]; then
   exit 1
 fi
 
+GIT_VERS=$(git describe --tags --abbrev=0)
+if [ ! -z "$(git status --porcelain)" ]; then 
+  # Uncommitted changes
+  GIT_VERS="${GIT_VERS} (unclean)"
+fi
+echo "Using version string '${GIT_VERS}'"
+
 
 # Globals
 SCRIPT_BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
@@ -45,8 +52,8 @@ trap 'on_exit $LINENO' ERR EXIT
 
 
 # Nix
-NIX_TOPLEVEL_PATH=$(nix-build --max-jobs 4 --cores 8 -A toplevel --out-link tmp-toplevel ./)
-NIX_ROOTFS_PATH=$(nix-build --max-jobs 4 --cores 8 -A rootfsImage --out-link tmp-rootfsImg ./)
+NIX_TOPLEVEL_PATH=$(nix-build --max-jobs 4 --cores 8 --argstr version "${GIT_VERS}" -A toplevel --out-link tmp-toplevel ./)
+NIX_ROOTFS_PATH=$(nix-build --max-jobs 4 --cores 8 --argstr version "${GIT_VERS}" -A rootfsImage --out-link tmp-rootfsImg ./)
 kernel_params=$(cat "${NIX_TOPLEVEL_PATH}/kernel-params")
 
 
