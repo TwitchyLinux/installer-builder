@@ -24,6 +24,8 @@ let
     '';
   };
 
+  installer-sway-config = ./sway.config;
+
 in
 {
   version,
@@ -52,6 +54,7 @@ in
       echo '${version}' > ./files/twl-installer-version
 
       install ${hw-info} -m644 ./files/nixos-hardware-info.json
+      install ${installer-sway-config} -m644 ./files/sway.config
     '';
   });
 }

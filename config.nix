@@ -52,7 +52,7 @@ in
   system.activationScripts.etc = lib.stringAfter [ "users" "groups" ]
     ''
       mkdir -pv /home/nixos/.config/sway
-      ln -s /etc/installer-sway.config /home/nixos/.config/sway/config || true
+      ln -s /sway.config /home/nixos/.config/sway/config || true
       chown nixos /home/nixos/.config
       chown nixos /home/nixos/.config/sway
 
@@ -77,10 +77,6 @@ in
   environment.etc."twlinst.glade" = {
     mode = "0644";
     text = lib.fileContents "${pkgs.twlinst}/twlinst.glade";
-  };
-  environment.etc."installer-sway.config" = {
-    mode = "0644";
-    text = lib.fileContents "${base-twl-config}/resources/sway.config" + "\nexec twlinst";
   };
 
   # environment.extraOutputsToInstall = [ "doc" "man" "info" ];
