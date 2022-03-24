@@ -92,7 +92,6 @@ in
       buildPackages.busybox
       stdenv.cc.libc
       busybox-sandbox-shell
-      base-twl-config
 
       nukeReferences
       perlPackages.FileSlurp
@@ -119,7 +118,10 @@ in
         ) */
 
       # (inputClosureOf (import <nixpkgs/nixos> { configuration = import ../configuration; }).pkgs.sway)
-    ];
+    ] ++   
+    # Don't error if it doesnt exist: it wont exist if base-twl-config
+    # is a path rather than a fetchtarball.
+      (if builtins.hasAttr "base-twl-config" pkgs then [base-twl-config] else []);
 
   time.timeZone = "America/Los_Angeles";
   boot.initrd.luks.forceLuksSupportInInitrd = true;
