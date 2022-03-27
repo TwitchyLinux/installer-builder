@@ -16,6 +16,8 @@ let
 
   base-twl-config = (import ./sources.nix).twl-base-config;
 
+  testing-backdoor-enabled = (builtins.getEnv "UNSAFE_TESTING") == "backdoor";
+
 in
 {
   imports = [
@@ -23,7 +25,11 @@ in
     <nixpkgs/nixos/modules/profiles/base.nix>
 
     base-twl-config
-  ];
+  ] ++ (
+    if testing-backdoor-enabled then [
+      ./tests/test-instrumentation.nix
+    ] else []
+  );
 
   twl.installer = lib.mkForce true;
   fileSystems = {
@@ -38,7 +44,9 @@ in
   };
 
   services.getty = {
-    greetingLine = ''<<< Welcome to the TwitchyLinux Installer! (\m) - \l >>>'';
+    greetingLine = ''<<< '' +
+        lib.optionalString testing-backdoor-enabled ''TEST MODE - BACKDOOR ENABLED '' +
+        ''Welcome to the TwitchyLinux Installer! (\m) - \l >>>'';
     autologinUser = "nixos";
   };
 
@@ -125,4 +133,20 @@ in
 
   time.timeZone = "America/Los_Angeles";
   boot.initrd.luks.forceLuksSupportInInitrd = true;
-}
+} // (if testing-backdoor-enabled then {
+    # Based on <nixpkgs/nixos/tests/sway.nix>
+    environment.variables."WLR_RENDERER" = "pixman";
+    environment.variables."WLR_RENDERER_ALLOW_SOFTWARE" = "1";
+
+    fonts.fonts = [ pkgs.inconsolata ];
+    environment.etc."xdg/foot/foot.ini".text = lib.generators.toINI { } {
+      main = {
+        font = "inconsolata:size=14";
+      };
+      colors = rec {
+        foreground = "000000";
+        background = "ffffff";
+        regular2 = foreground;
+      };
+    };
+  } else {})

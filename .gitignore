@@ -1,3 +1,4 @@
 *.cpio
 *.img
 /result
+/tests/result
