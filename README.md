@@ -16,3 +16,14 @@ qemu-system-x86_64 -bios $(nix eval --raw nixpkgs.OVMF.fd)/FV/OVMF.fd -device vi
 # Dont forget to install qemu and 'OVMF'
 
 ```
+
+
+## Smoke test
+
+```shell
+rm -f /tmp/qemu_hdd.img
+qemu-img create -f qcow2 /tmp/qemu_hdd.img 25G
+UNSAFE_TESTING=backdoor ./make-installer.sh
+cd tests
+$(nix-build --argstr installer /tmp/twl-installer.img ./)/bin/test
+````
