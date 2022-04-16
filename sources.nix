@@ -5,8 +5,8 @@
   # This is imported into the nixos configuration for both the installer
   # and the final TwitchyLinux installation.
   twl-base-config = builtins.fetchTarball {
-     url = "https://github.com/TwitchyLinux/base-config/archive/refs/tags/v0.1.12.tar.gz";
-     sha256 = "1fgx5rqiwf0fvgslj9b2i9ndx7pdm2y7rm2s3j0a86p4rh3x60qq"; # use nix-prefetch-url --unpack '<url>'
+     url = "https://github.com/TwitchyLinux/base-config/archive/refs/tags/v0.1.14.tar.gz";
+     sha256 = "0fp0pnn1hsg4dqx8imz9pbswr34zzl460abygy0z2fv7584jjshn"; # use nix-prefetch-url --unpack '<url>'
   };
 
   nixos-hardware = builtins.fetchTarball {
